@@ -42,5 +42,9 @@
 @endpush
 
 @section('content')
-    Selamat datang admin
+    @if($user->level == 'admin')
+        Selamat datang admin
+    @elseif($user->level == 'siswa')
+        Selamat datang siswa
+    @endif
 @endsection

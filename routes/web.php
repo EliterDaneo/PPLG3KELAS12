@@ -34,21 +34,28 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/proses', 'proses')->name('proses');
 });
 
+Route::get('/dashboard', [AdminController::class, 'index'])->middleware('auth');
+
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['user_access:admin']], function () {
-        Route::controller(AdminController::class)->group(function () {
-            Route::get('/admin', 'index')->name('admin');
-        });
-        Route::controller(SiswaController::class)->group(function () {
-            Route::get('/siswa', 'index')->name('siswa');
-        });
-        Route::controller(KelasController::class)->group(function () {
-            Route::get('/dataKelas', 'index')->name('dataKelas');
-        });
+        // Route::controller(SiswaController::class)->group(function () {
+        //     Route::get('/dataSiswa', 'index')->name('dataSiswa');
+        // });
+        // Route::controller(KelasController::class)->group(function () {
+        //     Route::get('/dataKelas', 'index')->name('dataKelas');
+        // });
+        Route::resource('dataKelas', KelasController::class);
     });
+});
+
+Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['user_access:siswa']], function () {
-        Route::controller(UserController::class)->group(function () {
-            Route::get('/siswa', 'index')->name('siswa');
-        });
+        // Route::controller(KelasController::class)->group(function () {
+        //     Route::get('/dataKelas', 'index')->name('dataKelas');
+        // });
+        // Route::controller(SiswaController::class)->group(function () {
+        //     Route::get('/dataSiswa', 'index')->name('dataSiswa');
+        // });
+        Route::resource('dataKelasUser', KelasController::class);
     });
 });

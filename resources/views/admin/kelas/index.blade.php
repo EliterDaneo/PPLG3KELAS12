@@ -20,9 +20,13 @@
                     <td>System Architect</td>
                     <td>Edinburgh</td>
                     <td>
-                        <a href="">Edit</a>
-                        <a href="">Lihat</a>
-                        <a href="">Hapus</a>
+                        @if ($user->level == 'admin')
+                            <a href="">Edit</a>
+                            <a href="">Lihat</a>
+                            <a href="">Hapus</a>
+                        @elseif($user->level == 'siswa')
+                            <a href="">Lihat</a>
+                        @endif
                     </td>
                 </tr>
             </tbody>
