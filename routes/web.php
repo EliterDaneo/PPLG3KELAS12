@@ -8,6 +8,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,20 +41,41 @@ Route::get('/dashboard', [AdminController::class, 'index'])->middleware('auth');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['user_access:admin']], function () {
-        Route::resource('dataKelas', KelasController::class);
-        Route::resource('dataSiswa', SiswaController::class);
-        Route::resource('dataMapel', MapelController::class);
-        Route::resource('dataGuru', GuruController::class);
-        Route::resource('dataJurusan', JurusanController::class);
-    });
-});
+        Route::controller(AdminController::class)->group(function () {
+            Route::get('/admin', 'index')->name('admin');
+        });
 
-Route::group(['middleware' => ['auth']], function () {
+        Route::controller(SiswaController::class)->group(function () {
+            Route::get('/dataSiswa', 'index')->name('dataSiswa');
+        });
+
+        Route::controller(MapelController::class)->group(function () {
+            Route::get('/dataMapel', 'index')->name('dataMapel');
+        });
+
+        Route::controller(GuruController::class)->group(function () {
+            Route::get('/dataGuru', 'index')->name('dataGuru');
+        });
+
+        Route::controller(KelasController::class)->group(function () {
+            Route::get('/dataKelas', 'index')->name('dataKelas');
+        });
+
+        Route::controller(JurusanController::class)->group(function () {
+            Route::get('/dataJurusan', 'index')->name('dataJurusan');
+        });
+    });
     Route::group(['middleware' => ['user_access:siswa']], function () {
-        Route::resource('dataKelasUser', KelasController::class);
-        Route::resource('dataSiswaUser', SiswaController::class);
-        Route::resource('dataMapelUser', MapelController::class);
-        Route::resource('dataGuruUser', GuruController::class);
-        Route::resource('dataJurusanUser', JurusanController::class);
+        Route::controller(UserController::class)->group(function () {
+            Route::get('/user', 'index')->name('user');
+        });
+
+        Route::controller(SiswaController::class)->group(function () {
+            Route::get('/dataSiswaUser', 'index')->name('dataSiswaUser');
+        });
+
+        Route::controller(KelasController::class)->group(function () {
+            Route::get('/dataKelasUser', 'index')->name('dataKelasUser');
+        });
     });
 });
